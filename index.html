@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PushAudit - Operational AI Audit Platform</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="header-logo">
+        Push<span>Audit</span>
+      </a>
+      <nav class="header-nav">
+        <button type="button" class="btn btn-primary" id="new-audit-btn">
+          + New Audit
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>Your Audits</h1>
+        <div class="page-header-actions">
+          <button type="button" class="btn btn-outline" id="import-btn">
+            Import
+          </button>
+          <button type="button" class="btn btn-outline" id="export-all-btn">
+            Export All
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <select class="select" id="status-filter">
+            <option value="">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="search-box">
+          <span class="search-box-icon">🔍</span>
+          <input type="text" class="input" id="search-input" placeholder="Search audits...">
+        </div>
+      </div>
+
+      <!-- Audit List -->
+      <div class="audit-list" id="audit-list">
+        <!-- Audits will be rendered here by JavaScript -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading audits...</p>
+        </div>
+      </div>
+
+      <!-- Data Actions -->
+      <div class="data-actions">
+        <span class="data-actions-title">Data Management</span>
+        <button type="button" class="btn btn-sm btn-outline" id="import-btn-bottom">
+          Import JSON
+        </button>
+        <button type="button" class="btn btn-sm btn-outline" id="export-all-btn-bottom">
+          Export All
+        </button>
+      </div>
+
+      <!-- Hidden file input for import -->
+      <input type="file" id="import-file" class="file-input-hidden" accept=".json">
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>PushAudit - Operational AI Audit Platform</p>
+      <p>All data is stored locally in your browser.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils/constants.js"></script>
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/utils/export.js"></script>
+  <script src="js/components/toast.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Additional event bindings for bottom buttons
+    document.getElementById('import-btn-bottom')?.addEventListener('click', () => {
+      document.getElementById('import-file')?.click();
+    });
+
+    document.getElementById('export-all-btn-bottom')?.addEventListener('click', async () => {
+      await ExportUtils.exportAllAudits();
+    });
+  </script>
+</body>
+</html>

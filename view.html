@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Audit - PushAudit</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/wizard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    /* View-specific styles */
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-6);
+      padding-bottom: var(--spacing-4);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .view-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+
+    .view-title h1 {
+      font-size: var(--font-size-2xl);
+    }
+
+    .view-roi {
+      text-align: center;
+    }
+
+    .view-roi .roi-label {
+      display: block;
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-500);
+      margin-bottom: var(--spacing-1);
+    }
+
+    .view-roi .roi-value {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+    }
+
+    .roi-value.roi-high { color: var(--color-success); }
+    .roi-value.roi-medium { color: var(--color-warning); }
+    .roi-value.roi-low { color: var(--color-error); }
+
+    .view-sections {
+      display: grid;
+      gap: var(--spacing-4);
+    }
+
+    .view-section .card-header h3 {
+      font-size: var(--font-size-lg);
+      margin: 0;
+    }
+
+    .view-field {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-2) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+
+    .view-field:last-child {
+      border-bottom: none;
+    }
+
+    .view-field-label {
+      font-weight: 500;
+      color: var(--color-gray-600);
+    }
+
+    .view-field-value {
+      color: var(--color-gray-900);
+      text-align: right;
+      max-width: 60%;
+    }
+
+    .view-actions {
+      display: flex;
+      gap: var(--spacing-3);
+      justify-content: flex-end;
+      margin-top: var(--spacing-6);
+      padding-top: var(--spacing-4);
+      border-top: 1px solid var(--color-gray-200);
+    }
+
+    /* Tasks list */
+    .task-item {
+      display: grid;
+      grid-template-columns: 80px 1fr 60px;
+      gap: var(--spacing-3);
+      padding: var(--spacing-2) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+
+    .task-time {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-500);
+    }
+
+    .task-duration {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-500);
+      text-align: right;
+    }
+
+    /* Process list */
+    .process-item {
+      padding: var(--spacing-3) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+
+    .process-name {
+      font-weight: 600;
+      margin-bottom: var(--spacing-1);
+    }
+
+    .process-flow-view {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+    }
+
+    /* Use cases list */
+    .usecase-item {
+      padding: var(--spacing-3) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+
+    .usecase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-1);
+    }
+
+    .usecase-title {
+      font-weight: 600;
+    }
+
+    .usecase-description {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+      margin: 0;
+    }
+
+    /* Opportunities list */
+    .opportunities-group h4 {
+      font-size: var(--font-size-base);
+      color: var(--color-gray-700);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .opportunity-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-2) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+
+    @media print {
+      .view-actions,
+      .header,
+      .footer {
+        display: none !important;
+      }
+
+      .view-section {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="header-logo">
+        Push<span>Audit</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html" class="header-back">
+          ← Back to Audits
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <div id="view-content">
+        <!-- View content will be rendered by JavaScript -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading audit...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>PushAudit - Operational AI Audit Platform</p>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils/constants.js"></script>
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/utils/export.js"></script>
+  <script src="js/components/toast.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

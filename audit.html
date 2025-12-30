@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Wizard - PushAudit</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/wizard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="header-logo">
+        Push<span>Audit</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html" class="header-back">
+          ← Back to Audits
+        </a>
+        <span class="header-audit-id" id="current-audit-id"></span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <!-- Wizard Container -->
+      <div class="wizard-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progress-bar">
+          <!-- Progress will be rendered by JavaScript -->
+        </div>
+
+        <!-- Section Content -->
+        <div class="wizard-content" id="wizard-content">
+          <!-- Section content will be rendered by JavaScript -->
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading audit...</p>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="wizard-navigation" id="wizard-navigation">
+          <button type="button" class="btn btn-outline btn-lg" id="prev-btn" disabled>
+            ← Previous
+          </button>
+          <div class="autosave-indicator" id="autosave-indicator">
+            <span class="autosave-status">All changes saved</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg" id="next-btn">
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>PushAudit - Data saves automatically to your browser</p>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript - Core -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils/constants.js"></script>
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/utils/export.js"></script>
+  <script src="js/components/toast.js"></script>
+
+  <!-- JavaScript - Wizard -->
+  <script src="js/wizard/autosave.js"></script>
+  <script src="js/wizard/wizard.js"></script>
+
+  <!-- JavaScript - Sections -->
+  <script src="js/sections/section1-general.js"></script>
+  <script src="js/sections/section2-workday.js"></script>
+  <script src="js/sections/section3-process.js"></script>
+  <script src="js/sections/section4-workload.js"></script>
+  <script src="js/sections/section5-data.js"></script>
+  <script src="js/sections/section6-automation.js"></script>
+  <script src="js/sections/section7-impact.js"></script>
+  <script src="js/sections/section8-usecases.js"></script>
+  <script src="js/sections/section9-opportunities.js"></script>
+  <script src="js/sections/section10-validation.js"></script>
+
+  <!-- JavaScript - App -->
+  <script src="js/app.js"></script>
+</body>
+</html>

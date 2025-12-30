@@ -1,0 +1,594 @@
+/* ============================================
+   PushAudit - Wizard Styles
+   Progress Bar, Sections, Navigation
+   ============================================ */
+
+/* ============================================
+   WIZARD CONTAINER
+   ============================================ */
+
+.wizard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.wizard-progress {
+  margin-bottom: var(--spacing-8);
+}
+
+.progress-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: var(--spacing-4);
+}
+
+/* Progress Line */
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-gray-200);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.progress-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+  transform: translateY(-50%);
+  z-index: 1;
+  transition: width var(--transition-normal);
+}
+
+/* Step Indicators */
+.progress-step {
+  position: relative;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-gray-300);
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.progress-step:hover {
+  border-color: var(--color-gray-400);
+}
+
+.progress-step.completed {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.progress-step.current {
+  background-color: var(--color-white);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+}
+
+/* Progress Info */
+.progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-section-name {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.progress-step-counter {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+}
+
+/* ============================================
+   WIZARD SECTION
+   ============================================ */
+
+.wizard-section {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-6);
+}
+
+.section-header {
+  padding: var(--spacing-6);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.section-title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-2);
+}
+
+.section-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin-bottom: 0;
+}
+
+.section-content {
+  padding: var(--spacing-6);
+}
+
+/* ============================================
+   WIZARD NAVIGATION
+   ============================================ */
+
+.wizard-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) 0;
+}
+
+.wizard-navigation .btn {
+  min-width: 120px;
+}
+
+.nav-spacer {
+  flex: 1;
+}
+
+/* ============================================
+   FORM LAYOUTS
+   ============================================ */
+
+.form-row {
+  margin-bottom: var(--spacing-5);
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-row-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+}
+
+.form-row-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-4);
+}
+
+/* ============================================
+   DYNAMIC LIST
+   ============================================ */
+
+.dynamic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.dynamic-item {
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+}
+
+.dynamic-item .input {
+  flex: 1;
+}
+
+.btn-remove-item {
+  padding: var(--spacing-2);
+  color: var(--color-gray-400);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+.btn-remove-item:hover {
+  color: var(--color-error);
+}
+
+.btn-add-item {
+  align-self: flex-start;
+  margin-top: var(--spacing-2);
+}
+
+/* ============================================
+   TIMELINE EDITOR (Section 2)
+   ============================================ */
+
+.timeline-editor {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.timeline-header {
+  display: grid;
+  grid-template-columns: 100px 100px 1fr 80px 40px;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-gray-100);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-600);
+}
+
+.timeline-items {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 100px 100px 1fr 80px 40px;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-gray-100);
+  align-items: center;
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+.timeline-item:hover {
+  background-color: var(--color-gray-50);
+}
+
+.timeline-item input {
+  padding: var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+.timeline-item input[type="time"] {
+  width: 100%;
+}
+
+.timeline-summary {
+  padding: var(--spacing-4);
+  background-color: var(--color-gray-50);
+  border-top: 1px solid var(--color-gray-200);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+
+.btn-add-timeline {
+  margin: var(--spacing-4);
+}
+
+/* ============================================
+   PROCESS MAPPER (Section 3)
+   ============================================ */
+
+.processes-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.process-card {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.process-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-gray-50);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.process-card-header .process-name {
+  flex: 1;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-base);
+}
+
+.process-card-header .process-name:focus {
+  outline: none;
+  background-color: var(--color-white);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+}
+
+.process-card-body {
+  padding: var(--spacing-4);
+}
+
+/* Process Flow Visualization */
+.process-flow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin: var(--spacing-4) 0;
+  overflow-x: auto;
+  padding: var(--spacing-2) 0;
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 140px;
+}
+
+.step-label {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+.process-step .input {
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.process-arrow {
+  color: var(--color-gray-400);
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.btn-remove-process {
+  padding: var(--spacing-2);
+  color: var(--color-gray-400);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-xl);
+  line-height: 1;
+}
+
+.btn-remove-process:hover {
+  color: var(--color-error);
+}
+
+/* ============================================
+   OPPORTUNITIES GRID (Section 9)
+   ============================================ */
+
+.opportunities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+}
+
+.opportunities-column {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+}
+
+.column-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.column-subtitle {
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  color: var(--color-gray-500);
+}
+
+.column-title.column-quickwin {
+  color: var(--color-success);
+}
+
+.column-title.column-structural {
+  color: var(--color-primary);
+}
+
+.opportunities-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  min-height: 100px;
+}
+
+.opportunity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+}
+
+.opportunity-item .input {
+  flex: 1;
+  border: none;
+  padding: 0;
+  font-size: var(--font-size-sm);
+}
+
+.opportunity-item .input:focus {
+  outline: none;
+}
+
+.opportunity-rank {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-gray-400);
+  min-width: 20px;
+}
+
+/* AI Summary Cards */
+.ai-summary-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.summary-card {
+  padding: var(--spacing-4);
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-primary);
+}
+
+.summary-card .label {
+  color: var(--color-primary-hover);
+  margin-bottom: var(--spacing-2);
+}
+
+/* ============================================
+   VALIDATION SECTION (Section 10)
+   ============================================ */
+
+.validation-summary {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+}
+
+.validation-summary h3 {
+  margin-bottom: var(--spacing-4);
+  font-size: var(--font-size-lg);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.summary-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+}
+
+.summary-value {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+/* ROI Preview */
+.roi-preview {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+  text-align: center;
+}
+
+.roi-preview h3 {
+  margin-bottom: var(--spacing-4);
+}
+
+.roi-meter {
+  max-width: 400px;
+  margin: 0 auto var(--spacing-4);
+}
+
+.roi-meter-track {
+  height: 24px;
+  background-color: var(--color-gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.roi-meter-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.roi-meter-value {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+}
+
+.roi-explanation {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  margin: 0;
+}
+
+/* Validation Form */
+.validation-form {
+  background-color: var(--color-success-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-success);
+}
+
+.validation-form h3 {
+  color: #15803d;
+  margin-bottom: var(--spacing-2);
+}
+
+.validation-form > p {
+  color: var(--color-gray-600);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-4);
+}
+
+.validation-actions {
+  display: flex;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
