@@ -153,7 +153,7 @@ const App = {
 
     // Export all button
     document.getElementById('export-all-btn')?.addEventListener('click', async () => {
-      await ExportUtils.exportAllAudits();
+      await ExportUtils.exportAllToJSON();
     });
 
     // Import button
@@ -165,7 +165,7 @@ const App = {
     document.getElementById('import-file')?.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
-        await ExportUtils.importFromJSON(file);
+        await Importer.importFromJSON(file);
         await this.renderAuditList();
         e.target.value = ''; // Reset input
       }
