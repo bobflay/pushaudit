@@ -274,5 +274,6 @@ const Importer = {
 // Make available globally
 if (typeof window !== 'undefined') {
   window.Exporter = Exporter;
+  window.ExportUtils = Exporter; // Alias for compatibility
   window.Importer = Importer;
 }
