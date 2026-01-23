@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PushAudit - Synthèse des Entretiens</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    /* Push Brand Colors */
+    :root {
+      --push-green: #00A651;
+      --push-green-dark: #008C44;
+      --push-green-light: #E6F7ED;
+      --push-green-lighter: #F0FBF5;
+    }
+
+    /* Page-specific styles */
+    .interviews-header {
+      background: linear-gradient(135deg, var(--push-green) 0%, var(--push-green-dark) 100%);
+      color: var(--color-white);
+      padding: var(--spacing-12) 0;
+      margin-bottom: var(--spacing-8);
+    }
+
+    .interviews-header h1 {
+      color: var(--color-white);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .interviews-header p {
+      opacity: 0.9;
+      margin-bottom: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-8);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+    }
+
+    .stat-card .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--push-green);
+      line-height: 1;
+      margin-bottom: var(--spacing-2);
+    }
+
+    .stat-card .stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: var(--spacing-8);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-gray-200);
+    }
+
+    .interview-card {
+      position: relative;
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-6);
+      overflow: hidden;
+      transition: all var(--transition-fast);
+    }
+
+    .interview-card:hover {
+      border-color: var(--push-green);
+      box-shadow: var(--shadow-md);
+    }
+
+    .interview-card::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--spacing-8) - 6px);
+      top: 28px;
+      width: 14px;
+      height: 14px;
+      background: var(--push-green);
+      border: 3px solid var(--color-white);
+      border-radius: 50%;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .interview-header {
+      padding: var(--spacing-4) var(--spacing-6);
+      border-bottom: 1px solid var(--color-gray-100);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+    }
+
+    .interview-title-section {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .interview-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-gray-900);
+      margin-bottom: var(--spacing-1);
+    }
+
+    .interview-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-500);
+    }
+
+    .interview-meta {
+      display: flex;
+      gap: var(--spacing-4);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+    }
+
+    .meta-icon {
+      font-size: var(--font-size-base);
+    }
+
+    .department-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--spacing-1) var(--spacing-3);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .department-badge.direction {
+      background-color: #fef3c7;
+      color: #b45309;
+    }
+
+    .department-badge.operations {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .department-badge.service-client {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    .department-badge.compliance {
+      background-color: #fce7f3;
+      color: #be185d;
+    }
+
+    .interview-body {
+      padding: var(--spacing-6);
+    }
+
+    .interview-section {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .interview-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-gray-700);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-3);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+
+    .section-icon {
+      font-size: var(--font-size-base);
+    }
+
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-2);
+    }
+
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--spacing-1) var(--spacing-3);
+      background-color: var(--color-gray-100);
+      color: var(--color-gray-700);
+      font-size: var(--font-size-xs);
+      border-radius: var(--radius-full);
+    }
+
+    .points-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .points-list li {
+      position: relative;
+      padding-left: var(--spacing-6);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+      line-height: 1.6;
+    }
+
+    .points-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      background-color: var(--push-green);
+      border-radius: 50%;
+    }
+
+    .points-list li.problem::before {
+      background-color: var(--color-error);
+    }
+
+    .points-list li.opportunity::before {
+      background-color: var(--color-success);
+    }
+
+    .sub-list {
+      margin-top: var(--spacing-2);
+      margin-left: var(--spacing-4);
+    }
+
+    .sub-list li::before {
+      width: 4px;
+      height: 4px;
+      background-color: var(--color-gray-400);
+    }
+
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-4);
+    }
+
+    @media (max-width: 768px) {
+      .findings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .finding-box {
+      padding: var(--spacing-4);
+      border-radius: var(--radius-md);
+    }
+
+    .finding-box.problems {
+      background-color: var(--color-error-light);
+    }
+
+    .finding-box.problems .section-title {
+      color: #dc2626;
+    }
+
+    .finding-box.opportunities {
+      background-color: var(--color-success-light);
+    }
+
+    .finding-box.opportunities .section-title {
+      color: #15803d;
+    }
+
+    .global-findings {
+      background: var(--color-white);
+      border: 2px solid var(--push-green);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      margin-top: var(--spacing-8);
+    }
+
+    .global-findings h2 {
+      color: var(--push-green);
+      margin-bottom: var(--spacing-6);
+      text-align: center;
+    }
+
+    .key-insight {
+      background: linear-gradient(135deg, var(--push-green-light) 0%, var(--push-green-lighter) 100%);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .key-insight p {
+      font-size: var(--font-size-lg);
+      color: var(--color-gray-700);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .actions-section {
+      margin-top: var(--spacing-8);
+      padding: var(--spacing-6);
+      background: var(--color-gray-50);
+      border-radius: var(--radius-lg);
+    }
+
+    .actions-section h3 {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .actions-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-3);
+    }
+
+    @media (max-width: 768px) {
+      .actions-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .action-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+    }
+
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--push-green-light);
+      color: var(--push-green);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-lg);
+    }
+
+    .print-btn {
+      position: fixed;
+      bottom: var(--spacing-6);
+      right: var(--spacing-6);
+      z-index: 100;
+    }
+
+    @media print {
+      .print-btn,
+      .header,
+      .footer {
+        display: none !important;
+      }
+
+      .interviews-header {
+        background: var(--color-gray-100) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .interview-card {
+        break-inside: avoid;
+      }
+    }
+
+    /* Override header logo color */
+    .header-logo span {
+      color: var(--push-green) !important;
+    }
+
+    /* Push green button */
+    .btn-push {
+      background-color: var(--push-green);
+      color: var(--color-white);
+      border-color: var(--push-green);
+    }
+
+    .btn-push:hover {
+      background-color: var(--push-green-dark);
+      border-color: var(--push-green-dark);
+    }
+
+    /* User Stories Section */
+    .user-stories-section {
+      margin-top: var(--spacing-4);
+      padding-top: var(--spacing-4);
+      border-top: 1px dashed var(--color-gray-200);
+    }
+
+    .user-stories-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-xs);
+    }
+
+    .user-stories-table th,
+    .user-stories-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: left;
+      border: 1px solid var(--color-gray-200);
+    }
+
+    .user-stories-table th {
+      background: var(--push-green-light);
+      color: var(--push-green-dark);
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .user-stories-table tr:hover {
+      background: var(--push-green-lighter);
+    }
+
+    .user-stories-table a {
+      color: var(--push-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .user-stories-table a:hover {
+      text-decoration: underline;
+    }
+
+    .user-stories-table td:nth-child(1) {
+      width: 70px;
+      white-space: nowrap;
+    }
+
+    .user-stories-table td:nth-child(2) {
+      width: 60px;
+    }
+
+    /* Mapping Table */
+    .mapping-section {
+      margin-top: var(--spacing-8);
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .mapping-section h2 {
+      padding: var(--spacing-6);
+      margin: 0;
+      background: var(--push-green);
+      color: white;
+    }
+
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .mapping-table th,
+    .mapping-table td {
+      padding: var(--spacing-3) var(--spacing-4);
+      text-align: left;
+      border-bottom: 1px solid var(--color-gray-200);
+      font-size: var(--font-size-sm);
+    }
+
+    .mapping-table th {
+      background: var(--color-gray-50);
+      font-weight: 600;
+      color: var(--color-gray-700);
+    }
+
+    .mapping-table tr:hover {
+      background: var(--push-green-lighter);
+    }
+
+    .mapping-table td:first-child {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .mapping-table a {
+      color: var(--push-green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .mapping-table a:hover {
+      text-decoration: underline;
+    }
+
+    .us-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      background: var(--push-green-light);
+      color: var(--push-green-dark);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      margin-right: var(--spacing-1);
+    }
+
+    .us-badge.epic {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    /* Time Savings Section */
+    .time-savings-section {
+      margin-top: var(--spacing-4);
+      padding: var(--spacing-4);
+      background: linear-gradient(135deg, var(--push-green-light) 0%, var(--push-green-lighter) 100%);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--push-green);
+    }
+
+    .time-savings-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .time-savings-icon {
+      font-size: 1.5rem;
+    }
+
+    .time-savings-title {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--push-green-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .time-savings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-3);
+    }
+
+    .time-saving-item {
+      background: var(--color-white);
+      padding: var(--spacing-3);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-1);
+    }
+
+    .time-saving-value {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      color: var(--push-green);
+    }
+
+    .time-saving-label {
+      font-size: var(--font-size-xs);
+      color: var(--color-gray-600);
+    }
+
+    .time-saving-detail {
+      font-size: var(--font-size-xs);
+      color: var(--color-gray-500);
+      font-style: italic;
+    }
+
+    .total-savings {
+      margin-top: var(--spacing-3);
+      padding: var(--spacing-3);
+      background: var(--push-green);
+      color: white;
+      border-radius: var(--radius-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-savings-label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+    }
+
+    .total-savings-value {
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+    }
+
+    /* Complexity Badges */
+    .complexity-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .complexity-badge.low {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .complexity-badge.medium {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .complexity-badge.high {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .complexity-badge.very-high {
+      background: #fecaca;
+      color: #991b1b;
+    }
+
+    /* Time Gain Value */
+    .time-gain-value {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--push-green-light), var(--push-green-lighter));
+      color: var(--push-green-dark);
+      border: 1px solid var(--push-green);
+    }
+
+    /* Story Points Badge */
+    .story-points-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      padding: 3px 8px;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+    }
+
+    .story-points-badge.single-sprint {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .story-points-badge.multi-sprint {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .multi-sprint-warning {
+      display: inline-block;
+      padding: 2px 6px;
+      background: #fef3c7;
+      color: #b45309;
+      border-radius: var(--radius-sm);
+      font-size: 9px;
+      font-weight: 600;
+      margin-left: 4px;
+      text-transform: uppercase;
+    }
+
+    .sprint-info-box {
+      margin-top: var(--spacing-4);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      color: #92400e;
+    }
+
+    .sprint-info-box strong {
+      color: #b45309;
+    }
+
+    /* Export Button */
+    .export-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+    }
+
+    .export-header h2 {
+      margin: 0;
+      flex: 1;
+    }
+
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #217346, #1e5c39);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(33, 115, 70, 0.3);
+    }
+
+    .btn-export:hover {
+      background: linear-gradient(135deg, #1e5c39, #185a32);
+      box-shadow: 0 4px 8px rgba(33, 115, 70, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-export:active {
+      transform: translateY(0);
+    }
+
+    .btn-export svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Priority Stars */
+    .priority-stars {
+      color: #f59e0b;
+      font-size: var(--font-size-sm);
+      letter-spacing: -2px;
+    }
+
+    /* Prioritized Table Styles */
+    .prioritized-section {
+      margin-top: var(--spacing-8);
+      background: var(--color-white);
+      border: 2px solid var(--push-green);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .prioritized-section h2 {
+      padding: var(--spacing-6);
+      margin: 0;
+      background: linear-gradient(135deg, var(--push-green) 0%, var(--push-green-dark) 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .prioritized-section h2 small {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 400;
+      opacity: 0.9;
+      margin-top: var(--spacing-1);
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: var(--font-size-sm);
+    }
+
+    .rank-badge.top {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: white;
+    }
+
+    .rank-badge.mid {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .rank-badge.low {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .quick-win-row {
+      background: linear-gradient(90deg, var(--push-green-lighter), transparent) !important;
+    }
+
+    .quick-win-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--push-green);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: var(--spacing-2);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="header-logo">
+        Push<span>Audit</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html" class="btn btn-outline">Retour aux Audits</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <div class="interviews-header">
+    <div class="container">
+      <h1>Synthèse des Entretiens</h1>
+      <p>Restitution detaillee des entretiens menes dans le cadre de l'audit IA - Projet Push</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="page-content" style="padding-top: 0;">
+    <div class="container">
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Entretiens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4</div>
+          <div class="stat-label">Départements</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Interlocuteurs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">16</div>
+          <div class="stat-label">Jours d'audit</div>
+        </div>
+      </div>
+
+      <!-- Timeline of Interviews -->
+      <h2 class="mb-6">Chronologie des Entretiens</h2>
+
+      <div class="timeline">
+
+        <!-- Interview 1: Direction -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Réunion avec la Direction</div>
+              <div class="interview-subtitle">Orientation stratégique IA & Automatisation</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge direction">Direction</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>29 Dec 2025</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128100;</span>
+                <span>DG, DOP, DAF, Audit</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Définir l'orientation stratégique de l'IA et de l'automatisation chez Push.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li>Priorisation du ROI rapide plutôt que des projets IA expérimentaux</li>
+                <li>Volonté d'améliorer l'existant (processus, outils, workflows)</li>
+                <li>Lancement d'une phase d'audit métier structurée avant implémentation</li>
+                <li>Mise en place d'une Squad IA dédiée à l'efficacité interne</li>
+                <li>Départements prioritaires identifiés : Operations, Finance, Audit</li>
+              </ul>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#9989;</span>
+                Livrables attendus
+              </div>
+              <ul class="points-list">
+                <li class="opportunity">Gains de temps mesurables</li>
+                <li class="opportunity">Réduction des erreurs humaines</li>
+                <li class="opportunity">Meilleure traçabilité</li>
+              </ul>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20046" target="_blank">#20046</a></td>
+                    <td><span class="us-badge epic">EPIC</span></td>
+                    <td>Automatisation des rapports</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 2: Marcel -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Marcel - Rapprochement & Controle</div>
+              <div class="interview-subtitle">Processus de rapprochement financier et reporting</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge operations">Operations</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>30 Dec 2025</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~58 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre les processus de rapprochement financier multi-plateformes et la production des rapports CODIR.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">Excel (macros personnalisées)</span>
+                <span class="tool-tag">Back Office Paymentology</span>
+                <span class="tool-tag">Redash</span>
+                <span class="tool-tag">Back Office Wave</span>
+                <span class="tool-tag">Back Office Hub2</span>
+                <span class="tool-tag">Back Office InTouch</span>
+                <span class="tool-tag">Back Office Africa Mobile</span>
+                <span class="tool-tag">Outlook</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Rapprochement multi-plateformes:</strong> Wave, Hub2, InTouch, Africa Mobile vs Paymentology - transactions marquées "réconcilié" ou "non réconcilié"</li>
+                <li><strong>Gestion des suspens:</strong> Transactions non réconciliées nécessitant une investigation manuelle (requiert un jugement humain)</li>
+                <li><strong>Rapport CODIR hebdomadaire:</strong> 4 slides produites chaque semaine pour le comité de direction</li>
+                <li><strong>Saisie manuelle VSS (Visa):</strong> Données extraites des fichiers EP45/EP47 reçus par email, saisies manuellement</li>
+                <li><strong>Pic de charge:</strong> Début de mois (clôtures mensuelles)</li>
+                <li><strong>Estimation:</strong> 75% des tâches suivent des règles claires (si/alors), 25% nécessitent un jugement humain</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Téléchargement manuel fastidieux:</strong> Attente de disponibilite des rapports chaque matin</li>
+                  <li class="problem"><strong>Macros Excel complexes:</strong> Difficiles a maintenir et dépendantes d'une seule personne</li>
+                  <li class="problem"><strong>Saisie manuelle VSS:</strong> Recopie des données Visa depuis emails (EP45/EP47)</li>
+                  <li class="problem"><strong>Pas d'alerte automatique:</strong> Détection manuelle des anomalies et suspens</li>
+                  <li class="problem"><strong>Key-person dependency:</strong> Seul Marcel maîtrise le processus complet</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Auto-téléchargement:</strong> Scripts pour récupérer automatiquement les rapports des back-offices partenaires</li>
+                  <li class="opportunity"><strong>Rapprochement automatisé:</strong> Matching automatique des transactions multi-plateformes</li>
+                  <li class="opportunity"><strong>Détection d'anomalies:</strong> Alertes automatiques sur transactions suspectes ou non réconciliées</li>
+                  <li class="opportunity"><strong>Import automatique VSS:</strong> Extraction et import auto des fichiers EP45/EP47</li>
+                  <li class="opportunity"><strong>Génération rapport CODIR:</strong> Automatisation des 4 slides hebdomadaires</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20062" target="_blank">#20062</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Rapprochement automatique des transactions multi-plateformes</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20200" target="_blank">#20200</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Consolidation et Détection des transactions anormales</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~3h/jour</span>
+                  <span class="time-saving-label">Rapprochement automatisé</span>
+                  <span class="time-saving-detail">Actuellement ~4h manuelles, réduction à ~1h de supervision</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~30min/jour</span>
+                  <span class="time-saving-label">Téléchargement auto des rapports</span>
+                  <span class="time-saving-detail">Attente et téléchargement manuel des 5+ back-offices</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2h/semaine</span>
+                  <span class="time-saving-label">Génération rapport CODIR</span>
+                  <span class="time-saving-detail">4 slides générées automatiquement</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1h/jour</span>
+                  <span class="time-saving-label">Import VSS automatique</span>
+                  <span class="time-saving-detail">Extraction auto des fichiers EP45/EP47</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé</span>
+                <span class="total-savings-value">~20-25h/semaine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 3: Elie -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Elie - Chargé de Réclamations</div>
+              <div class="interview-subtitle">Traitement des réclamations Visa/Mobile Money et chargebacks</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge operations">Operations</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>31 Dec 2025</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~47 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus de traitement des réclamations clients (Visa et Mobile Money) et le workflow des chargebacks.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">Back Office Push</span>
+                <span class="tool-tag">Intercom</span>
+                <span class="tool-tag">Zendesk (Paymentology)</span>
+                <span class="tool-tag">EP Report (rapports Paymentology)</span>
+                <span class="tool-tag">Excel</span>
+                <span class="tool-tag">Word (Visa Dispute Form)</span>
+                <span class="tool-tag">Outlook</span>
+                <span class="tool-tag">Teams</span>
+                <span class="tool-tag">WhatsApp</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Journée type:</strong> 8h-9h30 revue des réclamations critiques (SLA), 9h30-10h compensé Mobile Money, 10h-12h monitoring des services (Airtime, Wave, etc.), 14h-17h traitement des réclamations et check final</li>
+                <li><strong>Types de réclamations:</strong> Réclamations Visa (paiements TPE, retraits GAB) et réclamations Mobile Money (échecs de transactions, débits sans credit)</li>
+                <li><strong>Processus chargeback:</strong> Le chargeback intervient quand une transaction a été compensée par Visa - demande de remboursement via le réseau Visa</li>
+                <li><strong>Document "Visa Dispute Form":</strong> Formulaire Word rempli manuellement, converti en PDF et envoyé à Paymentology via Zendesk</li>
+                <li><strong>Délais:</strong> Paymentology répond sous 2-3 jours, puis Visa traite sous 30-40 jours ouvrables</li>
+                <li><strong>Volume:</strong> 15-20 réclamations traitées par jour en moyenne</li>
+                <li><strong>Pics de charge:</strong> Fins de mois, périodes de soldes, vacances et événements</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>100% manuel:</strong> Aucune automatisation - tout est fait manuellement (vérification, saisie, envoi)</li>
+                  <li class="problem"><strong>Tickets Intercom non structurés:</strong> Les réclamations arrivent en texte libre, il faut lire toute la conversation pour comprendre</li>
+                  <li class="problem"><strong>Suivi par code couleur Excel:</strong> Suivi des chargebacks envoyés à Paymentology via fichier Excel avec couleurs</li>
+                  <li class="problem"><strong>Copier-coller répétitif:</strong> Informations recopiées manuellement entre systèmes (Intercom, BOB, Word, Zendesk)</li>
+                  <li class="problem"><strong>Risque d'erreurs:</strong> Informations mal renseignées (mauvaise date, mauvais montant)</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Lien mail-ticket Intercom:</strong> Quand Paymentology répond par mail, actualiser automatiquement le ticket Intercom du client</li>
+                  <li class="opportunity"><strong>Pré-remplissage Visa Dispute Form:</strong> Générer automatiquement le formulaire avec les infos du BO de Push</li>
+                  <li class="opportunity"><strong>Résumé IA des tickets:</strong> Utiliser l'IA pour résumer les conversations Intercom et extraire les informations clés</li>
+                  <li class="opportunity"><strong>Alertes SLA:</strong> Notifications automatiques pour les réclamations proches du SLA</li>
+                  <li class="opportunity"><strong>Suivi automatisé:</strong> Relance automatique de Paymentology si pas de réponse sous 3 jours</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20081" target="_blank">#20081</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatiser génération, envoi et suivi des chargebacks Visa</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20309" target="_blank">#20309</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatisation du processus Chargeback VISA</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20046" target="_blank">#20046</a></td>
+                    <td><span class="us-badge epic">EPIC</span></td>
+                    <td>Automatisation des rapports</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~10min/chargeback</span>
+                  <span class="time-saving-label">Pré-remplissage Visa Dispute Form</span>
+                  <span class="time-saving-detail">Actuellement ~15min de copier-coller manuel par formulaire</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~5min/ticket</span>
+                  <span class="time-saving-label">Résumé IA des tickets Intercom</span>
+                  <span class="time-saving-detail">Lecture et compréhension des conversations</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~30min/jour</span>
+                  <span class="time-saving-label">Suivi automatisé chargebacks</span>
+                  <span class="time-saving-detail">Plus de suivi Excel avec codes couleur</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~15min/jour</span>
+                  <span class="time-saving-label">Alertes SLA automatiques</span>
+                  <span class="time-saving-detail">Plus de vérification manuelle des deadlines</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (15-20 réclamations/jour)</span>
+                <span class="total-savings-value">~3-4h/jour</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 4: Frank David -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Frank David - Gestionnaire Operations</div>
+              <div class="interview-subtitle">Gestion du stock de cartes et traitement des commandes</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge operations">Operations</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>7 Jan 2026</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~70 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus complet de gestion du stock de cartes, de la commande à lalivraison client.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">BO de Push (module gestion stock)</span>
+                <span class="tool-tag">Push QR (scan cartes)</span>
+                <span class="tool-tag">Push Vérification (photos)</span>
+                <span class="tool-tag">Excel (macros)</span>
+                <span class="tool-tag">Outlook</span>
+                <span class="tool-tag">Yango Business (livraison)</span>
+                <span class="tool-tag">FedEx/DHL (tracking)</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Chaîne d'approvisionnement:</strong> Processeur (Paymentology) crée les PAN → Personnalisateur (Idemia/ICS) imprime les cartes → Livraison FedEx → Réception et inventaire</li>
+                <li><strong>Processus commande en ligne:</strong> 8h-8h30 scan des cartes pour ventes en ligne, 8h30-9h revue du journal de sortie, 9h+ appels clients et personnalisation, livraison via Yango Business</li>
+                <li><strong>Volume:</strong> ~40 commandes/jour en période d'affluence</li>
+                <li><strong>Personnalisation:</strong> Impression du nom client sur la carte (machine locale), le reste (logo, PAN, CVV, date expiration) est fait par Idemia</li>
+                <li><strong>Inventaire:</strong> Comptage physique avec DAF et Conformité, pas de scan à la réception - vérification uniquement par quantité</li>
+                <li><strong>Stock plastique:</strong> 718 cartes Push + 4202 cartes CCC chez Idemia, commande trimestrielle</li>
+                <li><strong>Délais:</strong> Paymentology répond en 1 jour max, Idemia personnalise en 5 jours pour 5000 cartes, ICS (local) plus rapide</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Pas de notification commandes:</strong> Doit rafraîchir manuellement le BO pour voir les nouvelles commandes en ligne</li>
+                  <li class="problem"><strong>Dates d'expiration non trackées:</strong> Le BO ne connaît pas les dates d'expiration des cartes en stock - risque de livrer des cartes avec moins de 3 ans</li>
+                  <li class="problem"><strong>Vérification incomplète:</strong> A la réception, on compte les cartes mais on ne vérifie pas les tracking numbers individuels</li>
+                  <li class="problem"><strong>Erreurs de personnalisation:</strong> ~84 erreurs/an sur 4500+ cartes (fautes de frappe sur les noms) - carte perdue</li>
+                  <li class="problem"><strong>Pin mailer défectueux:</strong> Certaines cartes livrées sans code PIN lisible - carte inutilisable</li>
+                  <li class="problem"><strong>Communication par mail:</strong> Tout le processus avec Paymentology et Idemia se fait par email - pas de système centralisé</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Notifications temps réel:</strong> Alertes mail/Telegram/WhatsApp pour chaque nouvelle commande en ligne</li>
+                  <li class="opportunity"><strong>Integration Yango Business:</strong> Lien API entre BO Push et Yango pour créer automatiquement les commandes de livraison</li>
+                  <li class="opportunity"><strong>Tracking dates expiration:</strong> Ajouter les dates d'expiration dans le module gestion stock du BO</li>
+                  <li class="opportunity"><strong>Scan à la réception:</strong> Scanner toutes les cartes à la réception pour vérifier cohérence avec le fichier Idemia</li>
+                  <li class="opportunity"><strong>Appels automatisés IA:</strong> Robot vocal pour appeler les clients et confirmer disponibilite/localisation avant livraison</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20312" target="_blank">#20312</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Appel automatique IA pour livraison de carte</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20198" target="_blank">#20198</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Mise à disposition des rapports BNI automatique</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1h/jour</span>
+                  <span class="time-saving-label">Notifications temps réel commandes</span>
+                  <span class="time-saving-detail">Plus de rafraîchissement manuel du BO</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~5min/commande</span>
+                  <span class="time-saving-label">Appels IA automatisés</span>
+                  <span class="time-saving-detail">~40 commandes/jour = ~3h économisées</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~30min/jour</span>
+                  <span class="time-saving-label">Integration Yango Business</span>
+                  <span class="time-saving-detail">Création auto des commandes de livraison</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2h/réception</span>
+                  <span class="time-saving-label">Scan automatique à la réception</span>
+                  <span class="time-saving-detail">Vérification cohérence fichier Idemia</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (en période normale)</span>
+                <span class="total-savings-value">~4-5h/jour</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 5: Guillaume & Bamba - Fraud & Compliance -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Guillaume & Bamba - Fraude & Conformité</div>
+              <div class="interview-subtitle">Analyse transactionnelle et détection des comportements suspects</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge compliance">Compliance</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>8 Jan 2026</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~17 min</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128100;</span>
+                <span>Guillaume (Responsable) + Bamba</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus d'analyse transactionnelle pour détecter les comportements atypiques et les risques de fraude/blanchiment.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">BO de Push</span>
+                <span class="tool-tag">Redash (extraction)</span>
+                <span class="tool-tag">Excel (TCD)</span>
+                <span class="tool-tag">Bloc-notes (suivi)</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Mission:</strong> S'assurer que l'entreprise est en conformité avec les règles et identifier/gérer les risques de fraude et blanchiment</li>
+                <li><strong>Équipe:</strong> 12 personnes dans le département Conformité & Risques</li>
+                <li><strong>Processus quotidien (Bamba):</strong> 8h-9h extraction des transactions de la veille via Redash, puis création d'un TCD Excel avec statistiques par client</li>
+                <li><strong>Critères d'alerte:</strong> Montant total journalier > 5M, augmentation subite du nombre/montant de transactions, changement de type de transactions</li>
+                <li><strong>Volume:</strong> ~200 000 à 400 000 transactions analysées par jour, ligne par ligne</li>
+                <li><strong>Actions sur compte suspect:</strong> Surveillance → Blocage → Signalement aux autorités → Suppression (sur décision de justice)</li>
+                <li><strong>Reporting:</strong> Rapport hebdomadaire avec statistiques (ex: 200K comptes analysés, 27 alertes, 4 en suivi, 10 bloqués)</li>
+                <li><strong>Classification future:</strong> Besoin de classer les clients en 3 catégories (risque faible/moyen/élevé) selon critères PPE, territoires a risque, professions a risque</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Analyse 100% manuelle:</strong> Bamba analyse ligne par ligne les 200-400K transactions, vérifie l'historique client dans le BO manuellement</li>
+                  <li class="problem"><strong>Extrêmement chronophage:</strong> L'analyse transactionnelle prend toute la journée</li>
+                  <li class="problem"><strong>Risque d'erreur élevé:</strong> Peut passer à côté de comportements suspects par fatigue ou volume</li>
+                  <li class="problem"><strong>Pas de classification client:</strong> Le BO ne permet pas de classifier les clients par niveau de risque</li>
+                  <li class="problem"><strong>Historique non automatisé:</strong> Doit manuellement vérifier les jours/semaines précédentes pour chaque client flaggé</li>
+                  <li class="problem"><strong>Suivi via bloc-notes:</strong> Pas de système centralisé pour tracker les clients sous surveillance</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Analyse comportementale automatique:</strong> Outil qui analyse l'historique complet de chaque client et généré des alertes automatiques sur comportements atypiques</li>
+                  <li class="opportunity"><strong>Classification automatique des clients:</strong> Risque faible/moyen/élevé selon critères définis (PPE, territoires, professions)</li>
+                  <li class="opportunity"><strong>Critères d'alerte différenciés:</strong> Seuils d'alerte adaptés selon le niveau de risque du client</li>
+                  <li class="opportunity"><strong>Dashboard de suivi:</strong> Centraliser tous les clients sous surveillance avec leur statut</li>
+                  <li class="opportunity"><strong>Reporting automatisé:</strong> Génération automatique des rapports hebdomadaires avec statistiques</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20333" target="_blank">#20333</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Détection automatisée des transactions suspectes</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20335" target="_blank">#20335</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Analyse comportementale automatisée par client</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20337" target="_blank">#20337</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Alerte, suivi et controle des clients sanctionnes</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatisation des rapports KYC opérationnels</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Pre-vérification KYC automatisée par IA avec OCR</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Détection intelligente des erreurs de saisie KYC</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~6h/jour</span>
+                  <span class="time-saving-label">Analyse comportementale automatique</span>
+                  <span class="time-saving-detail">200-400K transactions analysées par IA vs manuellement</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1h/jour</span>
+                  <span class="time-saving-label">Classification auto des clients</span>
+                  <span class="time-saving-detail">Risque faible/moyen/élevé automatique</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2h/semaine</span>
+                  <span class="time-saving-label">Reporting automatisé</span>
+                  <span class="time-saving-detail">Rapports hebdo générés automatiquement</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1-2min/dossier</span>
+                  <span class="time-saving-label">Pré-vérification KYC OCR</span>
+                  <span class="time-saving-detail">Réduction de 30-50% du temps par dossier</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (équipe 12 personnes)</span>
+                <span class="total-savings-value">~35-40h/semaine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 6: Tiguinani - CRC -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Tiguinani - Service Client (CRC)</div>
+              <div class="interview-subtitle">Gestion des réclamations clients et support multi-canal</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge service-client">Service Client</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>8 Jan 2026</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>11:52 - 12:17</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus de gestion des réclamations clients, les outils utilisés par l'équipe CRC (15 personnes, 5-10 ans d'expérience), et identifier les opportunites d'automatisation.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">Intercom (tickets & macros)</span>
+                <span class="tool-tag">BO de Push</span>
+                <span class="tool-tag">BO Wave</span>
+                <span class="tool-tag">Zendesk</span>
+                <span class="tool-tag">Eyesta (telephonie)</span>
+                <span class="tool-tag">Redash</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128221;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Processus quotidien:</strong> Début à 7h, vérification des réclamations assignées dans Intercom, traitement selon priorité</li>
+                <li><strong>Top 5 des réclamations:</strong> Suppressions de comptes, mises à jour de données (numéros, identification), transactions erronées (Wave/MTN/Orange Money), annulation de transactions tiers</li>
+                <li><strong>Utilisation des macros Intercom:</strong> Catégorisation des tickets (type de réclamation, résolution), mais saisie manuelle des infos client et type de transaction</li>
+                <li><strong>Coordination inter-équipes:</strong> Transfert au DOP pour remboursements, escalade IT pour problèmes techniques, demande d'approbation pour certaines actions</li>
+                <li><strong>Canal téléphonique:</strong> Eyesta pour les appels entrants, même processus de catégorisation que les tickets</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Saisie manuelle répétitive:</strong> Infos client, type de réclamation, détails de transaction saisis manuellement pour chaque ticket</li>
+                  <li class="problem"><strong>Dépendance inter-équipes:</strong> Goulots d'étranglement quand une action nécessite l'intervention d'autres équipes (DOP, IT)</li>
+                  <li class="problem"><strong>Volume de tickets similaires:</strong> Beaucoup de réclamations répétitives (suppressions comptes, mises à jour données) traitées individuellement</li>
+                  <li class="problem"><strong>Multi-outils:</strong> Basculement constant entre Intercom, BO Push, BO Wave, Redash pour traiter une seule réclamation</li>
+                  <li class="problem"><strong>Pas de pré-qualification:</strong> Aucun tri automatique des tickets par urgence ou complexité</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Auto-remplissage des tickets:</strong> Pré-remplir les infos client et transaction à partir du numéro de téléphone ou ID</li>
+                  <li class="opportunity"><strong>Chatbot pour réclamations simples:</strong> Automatiser suppressions de comptes et mises à jour de données basiques</li>
+                  <li class="opportunity"><strong>Pré-qualification IA:</strong> Trier automatiquement les tickets par type, urgence et complexité</li>
+                  <li class="opportunity"><strong>Suggestions de résolution:</strong> Proposer des actions basées sur le type de réclamation détecté</li>
+                  <li class="opportunity"><strong>Vue unifiée client:</strong> Consolider les infos de tous les BO dans une seule interface</li>
+                  <li class="opportunity"><strong>Réponses automatiques:</strong> Templates intelligents pour les cas récurrents (70-80% des tickets)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatisation du contrôle qualité des conversations Intercom</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2min/ticket</span>
+                  <span class="time-saving-label">Auto-remplissage des tickets</span>
+                  <span class="time-saving-detail">Pré-remplissage infos client et transaction</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~70-80%</span>
+                  <span class="time-saving-label">Chatbot réclamations simples</span>
+                  <span class="time-saving-detail">Suppressions comptes, mises à jour données</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~3-4h/jour</span>
+                  <span class="time-saving-label">Contrôle qualité automatisé</span>
+                  <span class="time-saving-detail">Analyse auto des conversations vs audit manuel</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1h/jour</span>
+                  <span class="time-saving-label">Vue unifiée client</span>
+                  <span class="time-saving-detail">Plus de basculement entre BO Push/Wave/Redash</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (équipe 15 personnes)</span>
+                <span class="total-savings-value">~50-60h/semaine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 7: Awa - KYC/Risk -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Awa - Supervisor Analyst KYC</div>
+              <div class="interview-subtitle">Vérification KYC des comptes et validation des POS/Business</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge compliance">Risque/KYC</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>13 Jan 2026</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~30 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus de vérification KYC des comptes clients, la validation des POS et comptes business, et identifier les opportunités d'automatisation.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">Back Office de Push</span>
+                <span class="tool-tag">Excel (rapports)</span>
+                <span class="tool-tag">Word</span>
+                <span class="tool-tag">Redash</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Équipe:</strong> 5 personnes, Awa supervise l'équipe KYC avec 5-10 ans d'expérience</li>
+                <li><strong>Journée type:</strong> 8h-10h vérification des comptes J-1, 10h-11h flux de création, 11h-12h validation POS/Business/Coopératives</li>
+                <li><strong>Volume:</strong> ~35 vérifications par jour (comptes KYC + POS + Business)</li>
+                <li><strong>Temps par vérification:</strong> 2-3 minutes par client pour KYC standard, ~10 minutes pour POS/Business</li>
+                <li><strong>Documents requis (POS/Business):</strong> DFE, Registre de commerce, Pièce d'identité, Photo</li>
+                <li><strong>Reporting:</strong> Rapport hebdomadaire (vendredi) avec temps de traitement moyen, rapport mensuel et rapport d'erreurs</li>
+                <li><strong>Processus:</strong> Vérification concordance pièce/données saisies → Validation ou Rejet avec motif</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Vérification 100% manuelle:</strong> Comparaison visuelle pièce/données pour chaque client</li>
+                  <li class="problem"><strong>Rapports Excel chronophages:</strong> Calculs manuels des temps de traitement moyens, séparation des données par intervalle</li>
+                  <li class="problem"><strong>Pics de charge:</strong> Soirs et week-ends avec accumulation de comptes à traiter</li>
+                  <li class="problem"><strong>Frustration principale:</strong> Établissement des rapports et vérification des informations</li>
+                  <li class="problem"><strong>Processus répétitif:</strong> Mêmes vérifications pour chaque compte (date naissance, nationalité, numéro pièce)</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>OCR automatique:</strong> Extraction automatique des infos de la pièce d'identité</li>
+                  <li class="opportunity"><strong>Pré-remplissage automatique:</strong> Données extraites automatiquement renseignées dans le formulaire</li>
+                  <li class="opportunity"><strong>Validation automatique:</strong> Comparaison automatique pièce vs données saisies</li>
+                  <li class="opportunity"><strong>Reporting automatisé:</strong> Génération auto des rapports hebdo/mensuels avec formules pré-calculées</li>
+                  <li class="opportunity"><strong>Alertes comptes en attente:</strong> Notification automatique des comptes non traités</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Pré-vérification KYC automatisée par IA avec OCR</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Détection intelligente des erreurs de saisie KYC</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatisation des rapports KYC opérationnels</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~1-2min/dossier</span>
+                  <span class="time-saving-label">OCR + pré-remplissage automatique</span>
+                  <span class="time-saving-detail">Réduction 30-50% du temps par vérification KYC</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2h/semaine</span>
+                  <span class="time-saving-label">Rapport hebdomadaire automatisé</span>
+                  <span class="time-saving-detail">Plus de calculs manuels Excel</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~4h/mois</span>
+                  <span class="time-saving-label">Rapport mensuel automatisé</span>
+                  <span class="time-saving-detail">Génération automatique des statistiques</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~30min/jour</span>
+                  <span class="time-saving-label">Validation automatique concordance</span>
+                  <span class="time-saving-detail">Détection auto des incohérences pièce/données</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (équipe 5 personnes)</span>
+                <span class="total-savings-value">~15-20h/semaine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview 8: Isabelle - CRC Quality -->
+        <div class="interview-card">
+          <div class="interview-header">
+            <div class="interview-title-section">
+              <div class="interview-title">Isabelle Brou - Agent de Qualité CRC</div>
+              <div class="interview-subtitle">Évaluation qualité des conversations et coaching des agents</div>
+            </div>
+            <div class="interview-meta">
+              <span class="department-badge service-client">Service Client</span>
+              <div class="meta-item">
+                <span class="meta-icon">&#128197;</span>
+                <span>13 Jan 2026</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">&#128337;</span>
+                <span>~40 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="interview-body">
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#127919;</span>
+                Objectif
+              </div>
+              <p style="margin: 0; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                Comprendre le processus d'évaluation qualité des conversations (chat et appels), les critères d'évaluation, et identifier les opportunités d'automatisation du contrôle qualité.
+              </p>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128736;</span>
+                Outils utilisés
+              </div>
+              <div class="tools-list">
+                <span class="tool-tag">Intercom (conversations)</span>
+                <span class="tool-tag">Yesta (téléphonie)</span>
+                <span class="tool-tag">Excel (grilles d'évaluation)</span>
+                <span class="tool-tag">OneDrive (stockage appels)</span>
+                <span class="tool-tag">PowerPoint (formations)</span>
+                <span class="tool-tag">Back Office de Push</span>
+                <span class="tool-tag">Teams</span>
+              </div>
+            </div>
+
+            <div class="interview-section">
+              <div class="section-title">
+                <span class="section-icon">&#128172;</span>
+                Points clés discutés
+              </div>
+              <ul class="points-list">
+                <li><strong>Équipe:</strong> 8 agents CRC évalués, Isabelle seule responsable qualité (2-5 ans d'expérience)</li>
+                <li><strong>Journée type:</strong> 8h-10h évaluation conversations Intercom (10/agent), 10h-12h enregistrement appels (5/agent), après-midi écoute et notation</li>
+                <li><strong>Volume:</strong> ~10 conversations chat + 5 appels par agent par jour à évaluer</li>
+                <li><strong>Durée moyenne appel:</strong> 3-5 minutes (jusqu'à 15 min pour les plus longs)</li>
+                <li><strong>Critères d'évaluation:</strong> Salutation, personnalisation (nom client), compréhension requête, reformulation, cohérence réponse, solutionnement adapté</li>
+                <li><strong>Reporting:</strong> Rapport trimestriel complet + réalisations mensuelles avec remarques</li>
+                <li><strong>Problème macros:</strong> Agents créent leurs propres macros privées, impossibles à contrôler - demande de les rendre publiques</li>
+                <li><strong>Enquête satisfaction:</strong> Bug Intercom - les clients ne reçoivent plus l'enquête de satisfaction après fermeture conversation</li>
+              </ul>
+            </div>
+
+            <div class="findings-grid">
+              <div class="finding-box problems">
+                <div class="section-title">
+                  <span class="section-icon">&#9888;</span>
+                  Problèmes identifiés
+                </div>
+                <ul class="points-list">
+                  <li class="problem"><strong>Évaluation 100% manuelle:</strong> Écoute de chaque appel (parfois 2-3 fois), lecture de toutes les conversations</li>
+                  <li class="problem"><strong>Une seule personne:</strong> Isabelle seule pour évaluer 8 agents - goulot d'étranglement</li>
+                  <li class="problem"><strong>Stockage artisanal:</strong> Enregistrements sur OneDrive, dossiers par agent créés manuellement</li>
+                  <li class="problem"><strong>Macros privées incontrôlables:</strong> Agents créent leurs propres réponses, pas de visibilité sur ce qui est envoyé aux clients</li>
+                  <li class="problem"><strong>Sélection aléatoire manuelle:</strong> Choix des conversations "au pif", pas d'échantillonnage structuré</li>
+                  <li class="problem"><strong>Rapports PowerPoint manuels:</strong> Formations créées à la main sur les lacunes identifiées</li>
+                </ul>
+              </div>
+              <div class="finding-box opportunities">
+                <div class="section-title">
+                  <span class="section-icon">&#128161;</span>
+                  Opportunités d'automatisation
+                </div>
+                <ul class="points-list">
+                  <li class="opportunity"><strong>Analyse IA des conversations:</strong> Évaluation automatique de la structure (salutation, personnalisation, reformulation, solution)</li>
+                  <li class="opportunity"><strong>Détection écarts de structure:</strong> IA identifie les conversations qui ne respectent pas le script standard</li>
+                  <li class="opportunity"><strong>Génération auto des rapports:</strong> Rapports trimestriels générés automatiquement avec les données d'évaluation</li>
+                  <li class="opportunity"><strong>Échantillonnage intelligent:</strong> Sélection automatique des conversations à évaluer selon critères (durée, satisfaction, type)</li>
+                  <li class="opportunity"><strong>Analyse tonalité vocale:</strong> Détection automatique de la chaleur/professionnalisme dans la voix (avancé)</li>
+                  <li class="opportunity"><strong>Dashboard qualité temps réel:</strong> Suivi en direct des indicateurs qualité par agent</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="user-stories-section">
+              <div class="section-title">
+                <span class="section-icon">&#128279;</span>
+                User Stories Azure DevOps
+              </div>
+              <table class="user-stories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Titre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344</a></td>
+                    <td><span class="us-badge">US</span></td>
+                    <td>Automatisation du contrôle qualité des conversations Intercom</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="time-savings-section">
+              <div class="time-savings-header">
+                <span class="time-savings-icon">&#9201;</span>
+                <span class="time-savings-title">Gains de temps estimés</span>
+              </div>
+              <div class="time-savings-grid">
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~3-4h/jour</span>
+                  <span class="time-saving-label">Analyse IA des conversations chat</span>
+                  <span class="time-saving-detail">10 conv/agent × 8 agents analysées automatiquement</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~2h/jour</span>
+                  <span class="time-saving-label">Pré-analyse des appels</span>
+                  <span class="time-saving-detail">Transcription + détection écarts structure</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~4h/mois</span>
+                  <span class="time-saving-label">Rapport trimestriel automatisé</span>
+                  <span class="time-saving-detail">Génération auto des statistiques et remarques</span>
+                </div>
+                <div class="time-saving-item">
+                  <span class="time-saving-value">~40-60%</span>
+                  <span class="time-saving-label">Réduction temps audit manuel</span>
+                  <span class="time-saving-detail">Focus sur cas complexes identifiés par IA</span>
+                </div>
+              </div>
+              <div class="total-savings">
+                <span class="total-savings-label">Gain total estimé (1 personne qualité)</span>
+                <span class="total-savings-value">~20-25h/semaine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Global Findings -->
+      <div class="global-findings">
+        <h2>Constat Global</h2>
+
+        <div class="key-insight">
+          <p><strong>8 entretiens, 4 départements, 1 constat unanime:</strong> Processus 100% manuels, forte dépendance à Excel et aux macros personnalisées, multiplication des back-offices non intégrés, et un énorme potentiel d'automatisation (estimé à 70-80% des tâches répétitives).</p>
+        </div>
+
+        <div class="findings-grid">
+          <div class="finding-box problems">
+            <div class="section-title">
+              <span class="section-icon">&#9888;</span>
+              Problèmes récurrents identifiés
+            </div>
+            <ul class="points-list">
+              <li class="problem"><strong>Excel omni-present:</strong> Macros complexes pour rapprochement (Marcel), suivi chargebacks par code couleur (Elie), TCD pour analyse fraude (Bamba)</li>
+              <li class="problem"><strong>Multi back-offices non intégrés:</strong> BO Push, BO Wave, BO Hub2, BO InTouch, BO Africa Mobile, Paymentology, Zendesk - nécessitant copier-coller entre systèmes</li>
+              <li class="problem"><strong>Saisie manuelle répétitive:</strong> Visa Dispute Form (Elie), infos clients sur tickets (Tiguinani), données VSS (Marcel)</li>
+              <li class="problem"><strong>Analyse ligne par ligne:</strong> 200-400K transactions/jour analysées manuellement (Bamba), tickets traites un par un (CRC)</li>
+              <li class="problem"><strong>Pas d'alertes automatiques:</strong> Rafraîchissement manuel pour nouvelles commandes (Frank), détection manuelle des anomalies (Marcel)</li>
+              <li class="problem"><strong>Key-person dependency:</strong> Processus maîtrises par une seule personne (Marcel pour rapprochement, Frank pour gestion stock)</li>
+              <li class="problem"><strong>Suivi artisanal:</strong> Bloc-notes pour clients sous surveillance (Guillaume), Excel couleur pour chargebacks (Elie)</li>
+              <li class="problem"><strong>Vérification KYC manuelle:</strong> Comparaison visuelle pièce/données pour chaque client (Awa), calculs manuels Excel pour rapports</li>
+              <li class="problem"><strong>Contrôle qualité manuel:</strong> Écoute individuelle de chaque appel (Isabelle), évaluation conversation par conversation, une seule personne pour 8 agents</li>
+            </ul>
+          </div>
+          <div class="finding-box opportunities">
+            <div class="section-title">
+              <span class="section-icon">&#128161;</span>
+              Opportunités d'automatisation majeures
+            </div>
+            <ul class="points-list">
+              <li class="opportunity"><strong>Rapprochement automatisé:</strong> Matching automatique multi-plateformes avec détection des suspens et anomalies</li>
+              <li class="opportunity"><strong>Pré-remplissage formulaires:</strong> Visa Dispute Form auto-généré, tickets Intercom pré-remplis avec infos client</li>
+              <li class="opportunity"><strong>Analyse comportementale IA:</strong> Détection automatique des comportements atypiques et classification risque client</li>
+              <li class="opportunity"><strong>Notifications temps réel:</strong> Alertes commandes, SLA, transactions suspectes, relances automatiques</li>
+              <li class="opportunity"><strong>Chatbot réclamations:</strong> Automatiser 70-80% des demandes simples (suppressions comptes, mises à jour données)</li>
+              <li class="opportunity"><strong>Résumé IA des conversations:</strong> Extraire automatiquement les infos clés des tickets Intercom</li>
+              <li class="opportunity"><strong>Reporting automatisé:</strong> Génération auto CODIR, rapports hebdo compliance, statistiques CRC</li>
+              <li class="opportunity"><strong>Vue unifiée client:</strong> Consolider tous les BO dans une interface unique</li>
+              <li class="opportunity"><strong>OCR KYC automatisé:</strong> Extraction auto des pièces d'identité et validation automatique de concordance</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="key-metrics" style="margin-top: var(--spacing-6); display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-4);">
+          <div class="metric-card" style="background: var(--color-gray-100); padding: var(--spacing-4); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--push-green);">~4h</div>
+            <div style="font-size: var(--font-size-sm); color: var(--color-gray-600);">Temps quotidien rapprochement (Marcel)</div>
+          </div>
+          <div class="metric-card" style="background: var(--color-gray-100); padding: var(--spacing-4); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--push-green);">200-400K</div>
+            <div style="font-size: var(--font-size-sm); color: var(--color-gray-600);">Transactions analysées/jour (Compliance)</div>
+          </div>
+          <div class="metric-card" style="background: var(--color-gray-100); padding: var(--spacing-4); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--push-green);">15-20</div>
+            <div style="font-size: var(--font-size-sm); color: var(--color-gray-600);">Réclamations/jour (Elie)</div>
+          </div>
+          <div class="metric-card" style="background: var(--color-gray-100); padding: var(--spacing-4); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--push-green);">~40</div>
+            <div style="font-size: var(--font-size-sm); color: var(--color-gray-600);">Commandes cartes/jour (Frank)</div>
+          </div>
+        </div>
+
+        <!-- Total Time Savings Summary -->
+        <div style="margin-top: var(--spacing-6); background: linear-gradient(135deg, var(--push-green) 0%, var(--push-green-dark) 100%); padding: var(--spacing-6); border-radius: var(--radius-lg); color: white;">
+          <h3 style="color: white; margin-bottom: var(--spacing-4); text-align: center;">Potentiel de gains de temps total</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-4); text-align: center;">
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">20-25h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Marcel (Rapprochement)</div>
+            </div>
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">15-20h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Elie (Réclamations)</div>
+            </div>
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">20-25h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Frank (Cartes)</div>
+            </div>
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">35-40h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Compliance (12 pers.)</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-4); text-align: center; margin-top: var(--spacing-4);">
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">50-60h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">CRC (15 pers.)</div>
+            </div>
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">15-20h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Awa (KYC 5 pers.)</div>
+            </div>
+            <div>
+              <div style="font-size: var(--font-size-xl); font-weight: 700;">20-25h</div>
+              <div style="font-size: var(--font-size-xs); opacity: 0.9;">Isabelle (Qualité)</div>
+            </div>
+          </div>
+          <div style="margin-top: var(--spacing-4); padding-top: var(--spacing-4); border-top: 1px solid rgba(255,255,255,0.3); text-align: center;">
+            <div style="font-size: var(--font-size-sm); opacity: 0.9;">Estimation totale hebdomadaire</div>
+            <div style="font-size: var(--font-size-3xl); font-weight: 700;">175-215h/semaine</div>
+            <div style="font-size: var(--font-size-sm); opacity: 0.8; margin-top: var(--spacing-2);">Équivalent à ~4-5 ETP (temps plein)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Stories Mapping Table -->
+      <div class="mapping-section">
+        <h2>Mapping Entretiens - User Stories Azure DevOps</h2>
+        <table class="mapping-table">
+          <thead>
+            <tr>
+              <th>Entretien</th>
+              <th>User Stories Associées</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Direction (29 Dec)</td>
+              <td>
+                <span class="us-badge epic">EPIC</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20046" target="_blank">#20046 Automatisation des rapports</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Marcel (30 Dec)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20062" target="_blank">#20062 Rapprochement auto multi-plateformes</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20200" target="_blank">#20200 Détection transactions anormales</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Elie (31 Dec)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20081" target="_blank">#20081 Automatisation chargebacks Visa</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20309" target="_blank">#20309 Automatisation processus Chargeback VISA</a><br>
+                <span class="us-badge epic">EPIC</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20046" target="_blank">#20046 Automatisation des rapports</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Frank David (7 Jan)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20312" target="_blank">#20312 Appel automatique IA livraison carte</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20198" target="_blank">#20198 Rapports BNI automatiques</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Guillaume & Bamba (8 Jan)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20333" target="_blank">#20333 Détection transactions suspectes</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20335" target="_blank">#20335 Analyse comportementale client</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20337" target="_blank">#20337 Alerte clients sanctionnes</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341 Rapports KYC automatisés</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342 Pre-vérification KYC par IA</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343 Détection erreurs KYC</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Tiguinani (8 Jan)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344 Contrôle qualité conversations Intercom</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Awa (13 Jan)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342 Pré-vérification KYC par IA avec OCR</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343 Détection erreurs KYC</a><br>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341 Rapports KYC automatisés</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Isabelle (13 Jan)</td>
+              <td>
+                <span class="us-badge">US</span><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344 Contrôle qualité conversations Intercom</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Prioritized User Stories Table -->
+      <div class="prioritized-section">
+        <div class="export-header" style="padding: var(--spacing-6); background: linear-gradient(135deg, var(--push-green) 0%, var(--push-green-dark) 100%);">
+          <h2 style="background: none; padding: 0; margin: 0; color: white;">User Stories Priorisées<small style="display: block; font-size: var(--font-size-sm); font-weight: 400; opacity: 0.9; margin-top: var(--spacing-1);">Triées par ratio Complexité / Gain de temps (Quick Wins en premier)</small></h2>
+          <button class="btn-export" onclick="exportToExcel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            Exporter Excel
+          </button>
+        </div>
+        <table class="mapping-table" id="prioritized-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Rang</th>
+              <th style="width: 70px;">ID</th>
+              <th>Titre</th>
+              <th style="width: 100px;">Complexité</th>
+              <th style="width: 80px;">Story Pts</th>
+              <th style="width: 120px;">Gain Temps</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="quick-win-row">
+              <td><span class="rank-badge top">1</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20198" target="_blank">#20198</a></td>
+              <td>Mise à disposition des rapports BNI automatique<span class="quick-win-tag">Quick Win</span></td>
+              <td><span class="complexity-badge low">Low</span></td>
+              <td><span class="story-points-badge single-sprint">8</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr class="quick-win-row">
+              <td><span class="rank-badge top">2</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341</a></td>
+              <td>Automatisation des rapports KYC opérationnels<span class="quick-win-tag">Quick Win</span></td>
+              <td><span class="complexity-badge low">Low</span></td>
+              <td><span class="story-points-badge single-sprint">8</span></td>
+              <td><span class="time-gain-value">~10h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge top">3</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20333" target="_blank">#20333</a></td>
+              <td>Détection automatisée des transactions suspectes</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~10h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">4</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343</a></td>
+              <td>Détection intelligente des erreurs de saisie et incohérences KYC</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">5</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20337" target="_blank">#20337</a></td>
+              <td>Alerte, suivi et contrôle des clients sanctionnés ou à risque élevé</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~6h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">6</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20062" target="_blank">#20062</a></td>
+              <td>Rapprochement automatique des transactions multi-plateformes</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~20h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">7</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20081" target="_blank">#20081</a></td>
+              <td>Automatiser la génération, l'envoi et le suivi des chargebacks Visa<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">8</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20200" target="_blank">#20200</a></td>
+              <td>Consolidation et Détection des transactions anormales<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~18h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">9</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20309" target="_blank">#20309</a></td>
+              <td>Automatisation du processus Chargeback VISA<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">10</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344</a></td>
+              <td>Automatisation du contrôle qualité des conversations Intercom<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~15h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge mid">11</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20335" target="_blank">#20335</a></td>
+              <td>Analyse du sécurité financière automatisée par client<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~12h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge low">12</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342</a></td>
+              <td>Pré-vérification KYC automatisée par IA avec pré-remplissage<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge very-high">Very High</span></td>
+              <td><span class="story-points-badge multi-sprint">34</span></td>
+              <td><span class="time-gain-value">~25h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><span class="rank-badge low">13</span></td>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20312" target="_blank">#20312</a></td>
+              <td>Appel automatique IA pour livraison de carte<span class="multi-sprint-warning">Multi-Sprint</span></td>
+              <td><span class="complexity-badge very-high">Very High</span></td>
+              <td><span class="story-points-badge multi-sprint">34</span></td>
+              <td><span class="time-gain-value">~4h/semaine</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Complete User Stories Table -->
+      <div class="mapping-section" style="margin-top: var(--spacing-6);">
+        <h2>Liste Complète des User Stories</h2>
+        <table class="mapping-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">ID</th>
+              <th style="width: 70px;">Type</th>
+              <th>Titre</th>
+              <th style="width: 100px;">Complexité</th>
+              <th style="width: 80px;">Story Pts</th>
+              <th style="width: 120px;">Gain Temps</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20198" target="_blank">#20198</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Mise à disposition des rapports BNI automatique</td>
+              <td><span class="complexity-badge low">Low</span></td>
+              <td><span class="story-points-badge single-sprint">8</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20341" target="_blank">#20341</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Automatisation des rapports KYC opérationnels (journalier, hebdomadaire, mensuel)</td>
+              <td><span class="complexity-badge low">Low</span></td>
+              <td><span class="story-points-badge single-sprint">8</span></td>
+              <td><span class="time-gain-value">~10h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20333" target="_blank">#20333</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Détection automatisée des transactions suspectes</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~10h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20343" target="_blank">#20343</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Détection intelligente des erreurs de saisie et incohérences KYC</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20337" target="_blank">#20337</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Alerte, suivi et contrôle des clients sanctionnés ou à risque élevé</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~6h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20062" target="_blank">#20062</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Rapprochement automatique des transactions multi-plateformes</td>
+              <td><span class="complexity-badge medium">Medium</span></td>
+              <td><span class="story-points-badge single-sprint">13</span></td>
+              <td><span class="time-gain-value">~20h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20081" target="_blank">#20081</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Automatiser génération, envoi et suivi des chargebacks Visa</td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20200" target="_blank">#20200</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Consolidation et Détection des transactions anormales</td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~18h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20309" target="_blank">#20309</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Automatisation du processus Chargeback VISA</td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~8h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20344" target="_blank">#20344</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Automatisation du contrôle qualité des conversations Intercom selon les critères CRC</td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~15h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20335" target="_blank">#20335</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Analyse du sécurité financière automatisée par client (historique & profil)</td>
+              <td><span class="complexity-badge high">High</span></td>
+              <td><span class="story-points-badge multi-sprint">21</span></td>
+              <td><span class="time-gain-value">~12h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20342" target="_blank">#20342</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Pré-vérification KYC automatisée par IA avec pré-remplissage des champs</td>
+              <td><span class="complexity-badge very-high">Very High</span></td>
+              <td><span class="story-points-badge multi-sprint">34</span></td>
+              <td><span class="time-gain-value">~25h/semaine</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://dev.azure.com/Panelys/SPRINT%20BACKLOG/_queries/edit/20312" target="_blank">#20312</a></td>
+              <td><span class="us-badge">US</span></td>
+              <td>Appel automatique IA pour livraison de carte</td>
+              <td><span class="complexity-badge very-high">Very High</span></td>
+              <td><span class="story-points-badge multi-sprint">34</span></td>
+              <td><span class="time-gain-value">~4h/semaine</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Next Actions -->
+      <div class="actions-section">
+        <h3>Prochaines actions recommandees</h3>
+        <div class="actions-list">
+          <div class="action-item">
+            <div class="action-icon">&#128196;</div>
+            <span>Transformer chaque reunion en fiche d'audit standardisee</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">&#128197;</div>
+            <span>Creer une timeline officielle des interviews</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">&#128202;</div>
+            <span>Générer un document de restitution pour le COMEX</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">&#127919;</div>
+            <span>Mapper problèmes - solutions IA - ROI estimé</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>PushAudit - Plateforme d'Audit IA Operationnel</p>
+      <p>Document généré le 19 Janvier 2026</p>
+    </div>
+  </footer>
+
+  <!-- Print Button -->
+  <button class="btn btn-push print-btn" onclick="window.print()">
+    Imprimer / PDF
+  </button>
+
+  <!-- SheetJS library for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script>
+    // Make function globally accessible
+    window.exportToExcel = function() {
+      // Check if XLSX library is loaded
+      if (typeof XLSX === 'undefined') {
+        alert('Chargement de la bibliothèque Excel en cours... Veuillez réessayer dans quelques secondes.');
+        return;
+      }
+
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+
+      // Data for the prioritized user stories
+      const data = [
+        ['Rang', 'ID', 'Titre', 'Complexité', 'Story Points', 'Gain Temps', 'Sprint'],
+        [1, 20198, 'Mise à disposition des rapports BNI automatique', 'Low', 8, '~8h/semaine', '1 Sprint'],
+        [2, 20341, 'Automatisation des rapports KYC opérationnels', 'Low', 8, '~10h/semaine', '1 Sprint'],
+        [3, 20333, 'Détection automatisée des transactions suspectes', 'Medium', 13, '~10h/semaine', '1 Sprint'],
+        [4, 20343, 'Détection intelligente des erreurs de saisie et incohérences KYC', 'Medium', 13, '~8h/semaine', '1 Sprint'],
+        [5, 20337, 'Alerte, suivi et contrôle des clients sanctionnés ou à risque élevé', 'Medium', 13, '~6h/semaine', '1 Sprint'],
+        [6, 20062, 'Rapprochement automatique des transactions multi-plateformes', 'Medium', 13, '~20h/semaine', '1 Sprint'],
+        [7, 20081, 'Automatiser la génération, l\'envoi et le suivi des chargebacks Visa', 'High', 21, '~8h/semaine', 'Multi-Sprint'],
+        [8, 20200, 'Consolidation et Détection des transactions anormales', 'High', 21, '~18h/semaine', 'Multi-Sprint'],
+        [9, 20309, 'Automatisation du processus Chargeback VISA', 'High', 21, '~8h/semaine', 'Multi-Sprint'],
+        [10, 20344, 'Automatisation du contrôle qualité des conversations Intercom', 'High', 21, '~15h/semaine', 'Multi-Sprint'],
+        [11, 20335, 'Analyse du sécurité financière automatisée par client', 'High', 21, '~12h/semaine', 'Multi-Sprint'],
+        [12, 20342, 'Pré-vérification KYC automatisée par IA avec pré-remplissage', 'Very High', 34, '~25h/semaine', 'Multi-Sprint'],
+        [13, 20312, 'Appel automatique IA pour livraison de carte', 'Very High', 34, '~4h/semaine', 'Multi-Sprint']
+      ];
+
+      // Create worksheet
+      const ws = XLSX.utils.aoa_to_sheet(data);
+
+      // Set column widths
+      ws['!cols'] = [
+        { wch: 6 },   // Rang
+        { wch: 8 },   // ID
+        { wch: 55 },  // Titre
+        { wch: 12 },  // Complexité
+        { wch: 12 },  // Story Points
+        { wch: 14 },  // Gain Temps
+        { wch: 12 }   // Sprint
+      ];
+
+      // Color mappings
+      const complexityColors = {
+        'Low': { fgColor: { rgb: 'DCFCE7' }, fontColor: { rgb: '15803D' } },
+        'Medium': { fgColor: { rgb: 'FEF3C7' }, fontColor: { rgb: 'B45309' } },
+        'High': { fgColor: { rgb: 'FEE2E2' }, fontColor: { rgb: 'DC2626' } },
+        'Very High': { fgColor: { rgb: 'FECACA' }, fontColor: { rgb: '991B1B' } }
+      };
+
+      const sprintColors = {
+        '1 Sprint': { fgColor: { rgb: 'DCFCE7' }, fontColor: { rgb: '15803D' } },
+        'Multi-Sprint': { fgColor: { rgb: 'FEF3C7' }, fontColor: { rgb: 'B45309' } }
+      };
+
+      // Header style
+      const headerStyle = {
+        font: { bold: true, color: { rgb: 'FFFFFF' } },
+        fill: { fgColor: { rgb: '00A651' } },
+        alignment: { horizontal: 'center', vertical: 'center' },
+        border: {
+          top: { style: 'thin', color: { rgb: '008C44' } },
+          bottom: { style: 'thin', color: { rgb: '008C44' } },
+          left: { style: 'thin', color: { rgb: '008C44' } },
+          right: { style: 'thin', color: { rgb: '008C44' } }
+        }
+      };
+
+      // Apply styles to cells
+      const range = XLSX.utils.decode_range(ws['!ref']);
+
+      for (let R = range.s.r; R <= range.e.r; R++) {
+        for (let C = range.s.c; C <= range.e.c; C++) {
+          const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+          if (!ws[cellRef]) continue;
+
+          // Initialize style object
+          if (!ws[cellRef].s) ws[cellRef].s = {};
+
+          // Header row styling
+          if (R === 0) {
+            ws[cellRef].s = headerStyle;
+          } else {
+            // Data rows
+            const rowData = data[R];
+            const complexity = rowData[3];
+            const sprint = rowData[6];
+            const isQuickWin = R <= 2; // First 2 data rows are Quick Wins
+
+            // Base style for all data cells
+            ws[cellRef].s = {
+              alignment: { vertical: 'center' },
+              border: {
+                top: { style: 'thin', color: { rgb: 'E5E7EB' } },
+                bottom: { style: 'thin', color: { rgb: 'E5E7EB' } },
+                left: { style: 'thin', color: { rgb: 'E5E7EB' } },
+                right: { style: 'thin', color: { rgb: 'E5E7EB' } }
+              }
+            };
+
+            // Quick win row background
+            if (isQuickWin) {
+              ws[cellRef].s.fill = { fgColor: { rgb: 'F0FBF5' } };
+            }
+
+            // Complexity column (index 3)
+            if (C === 3 && complexityColors[complexity]) {
+              ws[cellRef].s.fill = complexityColors[complexity];
+              ws[cellRef].s.font = { color: complexityColors[complexity].fontColor, bold: true };
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+            }
+
+            // Story Points column (index 4)
+            if (C === 4) {
+              const spColor = sprint === '1 Sprint' ? sprintColors['1 Sprint'] : sprintColors['Multi-Sprint'];
+              ws[cellRef].s.fill = spColor;
+              ws[cellRef].s.font = { color: spColor.fontColor, bold: true };
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+            }
+
+            // Sprint column (index 6)
+            if (C === 6 && sprintColors[sprint]) {
+              ws[cellRef].s.fill = sprintColors[sprint];
+              ws[cellRef].s.font = { color: sprintColors[sprint].fontColor, bold: true };
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+            }
+
+            // Gain Temps column (index 5) - Push green styling
+            if (C === 5) {
+              ws[cellRef].s.fill = { fgColor: { rgb: 'E6F7ED' } };
+              ws[cellRef].s.font = { color: { rgb: '008C44' }, bold: true };
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+            }
+
+            // Rang column (index 0) - center align
+            if (C === 0) {
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+              ws[cellRef].s.font = { bold: true };
+              if (R <= 3) {
+                ws[cellRef].s.fill = { fgColor: { rgb: 'FEF3C7' } };
+                ws[cellRef].s.font = { bold: true, color: { rgb: 'B45309' } };
+              }
+            }
+
+            // ID column (index 1) - center align
+            if (C === 1) {
+              ws[cellRef].s.alignment = { horizontal: 'center', vertical: 'center' };
+              ws[cellRef].s.font = { color: { rgb: '00A651' }, bold: true };
+            }
+          }
+        }
+      }
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, 'User Stories Priorisées');
+
+      // Generate filename with date
+      const today = new Date();
+      const dateStr = today.toISOString().split('T')[0];
+      const filename = `PushAudit_UserStories_Priorisees_${dateStr}.xlsx`;
+
+      // Write and download
+      XLSX.writeFile(wb, filename);
+    }
+  </script>
+
+</body>
+</html>
